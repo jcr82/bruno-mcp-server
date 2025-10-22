@@ -1,6 +1,28 @@
 # Bruno MCP Server
 
+[![Tests](https://img.shields.io/badge/tests-99%20passing-success)](.)
+[![Coverage](https://img.shields.io/badge/coverage-68%25-yellow)](.)
+[![Function Coverage](https://img.shields.io/badge/function%20coverage-85%25-success)](.)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)](.)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 An MCP (Model Context Protocol) server that provides integration with Bruno CLI for API testing and collection management.
+
+## 🚀 Quick Start
+
+```bash
+# Install dependencies
+npm install
+
+# Run tests
+npm test
+
+# Build
+npm run build
+
+# Run test coverage
+npm run test:coverage
+```
 
 ## Features
 
