@@ -1,0 +1,41 @@
+{
+  "brunoCliPath": "/usr/local/bin/bru",
+  "brunoHome": "~/bruno-collections",
+  "timeout": {
+    "request": 30000,
+    "collection": 120000
+  },
+  "retry": {
+    "enabled": true,
+    "maxAttempts": 3,
+    "backoff": "exponential",
+    "retryableStatuses": [408, 429, 500, 502, 503, 504]
+  },
+  "security": {
+    "allowedPaths": [
+      "/home/user/projects",
+      "/home/user/bruno-collections"
+    ],
+    "maskSecrets": true,
+    "secretPatterns": [
+      "password",
+      "secret",
+      "token",
+      "key",
+      "auth",
+      "api[_-]?key"
+    ]
+  },
+  "logging": {
+    "level": "info",
+    "format": "text",
+    "logFile": "./logs/bruno-mcp.log",
+    "maxLogSize": 10485760,
+    "maxLogFiles": 5
+  },
+  "performance": {
+    "cacheEnabled": true,
+    "cacheTTL": 300000,
+    "maxConcurrency": 10
+  }
+}
