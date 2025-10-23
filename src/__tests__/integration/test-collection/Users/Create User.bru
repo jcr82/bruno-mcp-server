@@ -1,0 +1,38 @@
+meta {
+  name: Create User
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/users
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+body:json {
+  {
+    "name": "Test User",
+    "email": "test@example.com",
+    "username": "testuser"
+  }
+}
+
+tests {
+  test("Status should be 201", function() {
+    expect(res.status).to.equal(201);
+  });
+
+  test("Response should have an ID", function() {
+    expect(res.body.id).to.be.a('number');
+  });
+
+  test("Name should match", function() {
+    expect(res.body.name).to.equal("Test User");
+  });
+}

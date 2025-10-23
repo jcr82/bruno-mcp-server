@@ -1,0 +1,138 @@
+name: Publish to NPM
+
+on:
+  release:
+    types: [created]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (e.g., 1.0.0, 1.0.1-beta.1)'
+        required: true
+        type: string
+
+jobs:
+  publish:
+    name: Publish to NPM
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Update version (if workflow_dispatch)
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          npm version ${{ github.event.inputs.version }} --no-git-tag-version
+          echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
+
+      - name: Get version from package.json (if release)
+        if: github.event_name == 'release'
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Verify package contents
+        run: |
+          echo "📦 Package contents:"
+          npm pack --dry-run
+          echo ""
+          echo "✓ Package verification complete"
+
+      - name: Publish to NPM (latest)
+        if: "!contains(env.VERSION, '-')"
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish to NPM (beta/alpha)
+        if: contains(env.VERSION, '-')
+        run: |
+          if [[ "$VERSION" == *"-beta"* ]]; then
+            npm publish --tag beta --provenance --access public
+          elif [[ "$VERSION" == *"-alpha"* ]]; then
+            npm publish --tag alpha --provenance --access public
+          else
+            npm publish --tag next --provenance --access public
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create Git tag (if workflow_dispatch)
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add package.json package-lock.json
+          git commit -m "chore: bump version to ${{ env.VERSION }}"
+          git tag -a "v${{ env.VERSION }}" -m "Release v${{ env.VERSION }}"
+          git push origin main --tags
+
+      - name: Create GitHub Release (if workflow_dispatch)
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ env.VERSION }}
+          release_name: Release v${{ env.VERSION }}
+          body: |
+            ## Bruno MCP Server v${{ env.VERSION }}
+
+            Published to npm: https://www.npmjs.com/package/bruno-mcp-server
+
+            ### Installation
+            ```bash
+            npm install -g bruno-mcp-server
+            ```
+
+            ### What's Changed
+            See [CHANGELOG.md](CHANGELOG.md) for details.
+          draft: false
+          prerelease: ${{ contains(env.VERSION, '-') }}
+
+  verify:
+    name: Verify NPM Publication
+    needs: publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Wait for NPM to propagate
+        run: sleep 30
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: Verify package is available
+        run: |
+          echo "Checking if package is available on NPM..."
+          npm view bruno-mcp-server version
+          echo "✓ Package successfully published and available on NPM"
+
+      - name: Test global installation
+        run: |
+          npm install -g bruno-mcp-server
+          which bruno-mcp-server
+          echo "✓ Global installation successful"

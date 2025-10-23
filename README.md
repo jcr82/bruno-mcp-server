@@ -1,7 +1,7 @@
 # Bruno MCP Server
 
-[![Tests](https://img.shields.io/badge/tests-99%20passing-success)](.)
-[![Coverage](https://img.shields.io/badge/coverage-68%25-yellow)](.)
+[![Tests](https://img.shields.io/badge/tests-212%20passing-success)](.)
+[![Coverage](https://img.shields.io/badge/coverage-84.69%25-success)](.)
 [![Function Coverage](https://img.shields.io/badge/function%20coverage-85%25-success)](.)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)](.)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -10,49 +10,81 @@ An MCP (Model Context Protocol) server that provides integration with Bruno CLI 
 
 ## 🚀 Quick Start
 
+### Install via NPM (Recommended)
+
 ```bash
+# Install globally
+npm install -g bruno-mcp-server
+
+# Or install locally in your project
+npm install bruno-mcp-server
+```
+
+### Install from Source
+
+```bash
+# Clone the repository
+git clone https://github.com/jcr82/bruno-mcp-server.git
+cd bruno-mcp-server
+
 # Install dependencies
 npm install
-
-# Run tests
-npm test
 
 # Build
 npm run build
 
-# Run test coverage
-npm run test:coverage
+# Run tests
+npm test
 ```
 
 ## Features
 
-### MVP Features (Currently Implemented)
+### Core Features
 - ✅ Run individual API requests from Bruno collections
 - ✅ Run entire collections or specific folders
 - ✅ List all requests in a collection
-- ✅ Environment variable support
-- ✅ Proper error handling for unsupported operations
-- ✅ Local Bruno CLI installation (no global install required)
+- ✅ Environment variable support and validation
+- ✅ Report generation (JSON, JUnit, HTML)
+- ✅ Collection discovery and validation
+- ✅ Request introspection and dry run mode
+- ✅ Health monitoring and performance metrics
+- ✅ Security features (path validation, secret masking)
+- ✅ Caching for optimal performance
+- ✅ Mock CLI mode for testing and CI/CD
 
 ## Installation
 
 ### Prerequisites
 - **Node.js**: Version 18 or higher
+- **Bruno Collections**: Your existing Bruno API test collections
 
-### Setup
+### Option 1: NPM Global Installation
 
-1. Clone the repository and install dependencies:
+```bash
+npm install -g bruno-mcp-server
+```
+
+This installs the server globally and makes it available as a command.
+
+### Option 2: NPM Local Installation
+
+```bash
+npm install bruno-mcp-server
+```
+
+Add to your MCP client config using `node_modules/.bin/bruno-mcp-server`.
+
+### Option 3: From Source
+
+1. Clone the repository:
    ```bash
+   git clone https://github.com/jcr82/bruno-mcp-server.git
+   cd bruno-mcp-server
    npm install
-   ```
-   This will automatically install Bruno CLI locally in the project.
-
-2. Build the TypeScript code:
-   ```bash
    npm run build
    ```
 
-3. Configure your MCP client (e.g., Claude Desktop) to use the Bruno MCP server.
+2. The built server will be in `dist/index.js`.
 
 ## Configuration
 
@@ -63,12 +95,39 @@ Add the following to your Claude Desktop configuration file:
 **MacOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
 **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
 
+#### If installed globally via npm:
+
+```json
+{
+  "mcpServers": {
+    "bruno": {
+      "command": "bruno-mcp-server"
+    }
+  }
+}
+```
+
+#### If installed from source:
+
 ```json
 {
   "mcpServers": {
     "bruno": {
       "command": "node",
       "args": ["/path/to/bruno-mcp-server/dist/index.js"]
+    }
+  }
+}
+```
+
+#### If installed locally in a project:
+
+```json
+{
+  "mcpServers": {
+    "bruno": {
+      "command": "node",
+      "args": ["/path/to/project/node_modules/.bin/bruno-mcp-server"]
     }
   }
 }
@@ -577,20 +636,38 @@ The server properly handles and reports:
 - Request execution failures
 - Malformed input parameters
 
+## Documentation
+
+### 📚 Guides
+
+- **[Getting Started](docs/guides/getting-started.md)** - Step-by-step guide to install and configure Bruno MCP Server
+- **[Configuration](docs/guides/configuration.md)** - Complete configuration reference and options
+- **[Usage Patterns](docs/guides/usage-patterns.md)** - Common workflows and best practices
+- **[Troubleshooting](docs/guides/troubleshooting.md)** - Solutions to common issues
+- **[CI/CD Integration](docs/guides/ci-cd-integration.md)** - Integrate with GitHub Actions, GitLab CI, CircleCI
+- **[Mock Mode](MOCK-MODE.md)** - Testing without Bruno CLI dependencies
+
+### 🔧 API Reference
+
+- **[MCP Tools API](docs/api/tools.md)** - Complete reference for all 9 MCP tools with examples
+
 ## Troubleshooting
 
-### Bruno CLI Not Found
-If you get an error about Bruno CLI not being found:
+For detailed troubleshooting, see the [Troubleshooting Guide](docs/guides/troubleshooting.md).
+
+### Quick Fixes
+
+**Bruno CLI Not Found:**
 1. Ensure dependencies are installed: `npm install`
 2. Verify Bruno CLI was installed: `npx bru --version`
 3. The server will automatically use the local installation in `node_modules/.bin/bru`
 
-### Collection Not Found
+**Collection Not Found:**
+- Use absolute paths (not relative paths)
 - Verify the collection path is correct
-- Ensure the path points to a valid Bruno collection directory
-- Check that the directory contains `.bru` files
+- Ensure the directory contains a `bruno.json` file
 
-### Permission Issues
+**Permission Issues:**
 - Ensure the MCP server has read access to your Bruno collections
 - Check that the server can execute the Bruno CLI
 

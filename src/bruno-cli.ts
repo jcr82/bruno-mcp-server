@@ -244,12 +244,18 @@ export class BrunoCLI {
           }
 
           // Read the JSON output file
+          // Note: If custom reporters are used, Bruno CLI may not write to the temp file
           let jsonResult: any = null;
-          try {
-            const jsonContent = await fs.readFile(tempFile, 'utf-8');
-            jsonResult = JSON.parse(jsonContent);
-          } catch (error) {
-            console.error('Failed to read Bruno output file:', error);
+          const hasCustomReporters = options.reporterJson || options.reporterJunit || options.reporterHtml;
+
+          if (!hasCustomReporters) {
+            // Only try to read temp file if no custom reporters are specified
+            try {
+              const jsonContent = await fs.readFile(tempFile, 'utf-8');
+              jsonResult = JSON.parse(jsonContent);
+            } catch (error) {
+              console.error('Failed to read Bruno output file:', error);
+            }
           }
       // Clean up temp file
       try {
@@ -366,12 +372,18 @@ export class BrunoCLI {
       });
 
       // Read the JSON output file
+      // Note: If custom reporters are used, Bruno CLI may not write to the temp file
       let jsonResult: any = null;
-      try {
-        const jsonContent = await fs.readFile(tempFile, 'utf-8');
-        jsonResult = JSON.parse(jsonContent);
-      } catch (error) {
-        console.error('Failed to read Bruno output file:', error);
+      const hasCustomReporters = options.reporterJson || options.reporterJunit || options.reporterHtml;
+
+      if (!hasCustomReporters) {
+        // Only try to read temp file if no custom reporters are specified
+        try {
+          const jsonContent = await fs.readFile(tempFile, 'utf-8');
+          jsonResult = JSON.parse(jsonContent);
+        } catch (error) {
+          console.error('Failed to read Bruno output file:', error);
+        }
       }
 
       // Clean up temp file

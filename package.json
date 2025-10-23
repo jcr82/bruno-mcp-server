@@ -1,11 +1,26 @@
 {
   "name": "bruno-mcp-server",
   "version": "0.1.0",
-  "description": "MCP server for Bruno CLI integration",
+  "description": "MCP server for Bruno CLI integration - Execute API tests through Model Context Protocol",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
+  "bin": {
+    "bruno-mcp-server": "dist/index.js"
+  },
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.d.ts",
+    "!dist/**/__tests__/**",
+    "!dist/**/*.test.*",
+    "!dist/**/*.spec.*",
+    "README.md",
+    "LICENSE",
+    "bruno-mcp.config.example.json"
+  ],
   "scripts": {
     "build": "tsc",
+    "prepublishOnly": "npm run build && npm test",
     "start": "node dist/index.js",
     "dev": "tsx src/index.ts",
     "test": "vitest run",
@@ -16,10 +31,28 @@
   "keywords": [
     "mcp",
     "bruno",
-    "api-testing"
+    "api-testing",
+    "model-context-protocol",
+    "bruno-cli",
+    "api",
+    "testing",
+    "automation",
+    "claude",
+    "ai-tools"
   ],
-  "author": "",
+  "author": "Juan Ruiz",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jcr82/bruno-mcp-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jcr82/bruno-mcp-server/issues"
+  },
+  "homepage": "https://github.com/jcr82/bruno-mcp-server#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^0.6.0",
     "@usebruno/cli": "^1.0.0",

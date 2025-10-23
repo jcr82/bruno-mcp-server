@@ -1,0 +1,44 @@
+# Source files (we only publish compiled dist/)
+src/
+tsconfig.json
+tsx.config.js
+
+# Tests
+**/__tests__/
+**/*.test.ts
+**/*.spec.ts
+vitest.config.ts
+.vitest/
+coverage/
+dist/__tests__/
+
+# Development
+.vscode/
+.idea/
+*.log
+npm-debug.log*
+.DS_Store
+.env
+.env.local
+.env.*.local
+
+# Git
+.git/
+.gitignore
+.github/
+
+# Documentation (except README and LICENSE)
+docs/
+*.md
+!README.md
+ROADMAP.md
+V1.0-PLAN.md
+TESTING-SUMMARY.md
+MOCK-MODE.md
+
+# Build artifacts
+node_modules/
+dist/**/*.map
+
+# Config examples and test data
+bruno-mcp.config.json

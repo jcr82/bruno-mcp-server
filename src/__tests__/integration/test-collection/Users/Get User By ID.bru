@@ -1,0 +1,29 @@
+meta {
+  name: Get User By ID
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/users/1
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+
+  test("Response should have an ID", function() {
+    expect(res.body.id).to.equal(1);
+  });
+
+  test("Response should have a name", function() {
+    expect(res.body.name).to.be.a('string');
+  });
+}

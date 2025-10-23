@@ -225,7 +225,7 @@ class Logger {
     if (!params) return params;
 
     const sanitized = { ...params };
-    const sensitiveKeys = ['password', 'token', 'apiKey', 'secret', 'authorization'];
+    const sensitiveKeys = ['password', 'token', 'apikey', 'secret', 'authorization'];
 
     for (const key of Object.keys(sanitized)) {
       if (sensitiveKeys.some(sk => key.toLowerCase().includes(sk))) {

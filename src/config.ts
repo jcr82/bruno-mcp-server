@@ -9,6 +9,10 @@ export const ConfigSchema = z.object({
   // Bruno CLI configuration
   brunoCliPath: z.string().optional().describe('Custom path to Bruno CLI executable'),
   brunoHome: z.string().optional().describe('Bruno collections home directory'),
+  useMockCLI: z.boolean().optional().default(false)
+    .describe('Use mock Bruno CLI instead of real CLI (useful for testing and CI/CD)'),
+  mockCLIDelay: z.number().optional().default(100)
+    .describe('Simulated delay for mock CLI operations in milliseconds'),
 
   // Timeout configuration
   timeout: z.object({
@@ -72,6 +76,8 @@ export type BrunoMCPConfig = z.infer<typeof ConfigSchema>;
  * Default configuration
  */
 export const DEFAULT_CONFIG: BrunoMCPConfig = {
+  useMockCLI: false,
+  mockCLIDelay: 100,
   timeout: {
     request: 30000,
     collection: 120000

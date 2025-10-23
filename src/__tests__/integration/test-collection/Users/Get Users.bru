@@ -1,0 +1,25 @@
+meta {
+  name: Get Users
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/users
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+
+  test("Response should be JSON", function() {
+    expect(res.headers['content-type']).to.include('application/json');
+  });
+}
