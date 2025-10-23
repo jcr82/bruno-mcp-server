@@ -72,7 +72,7 @@ jobs:
         run: npm run build
 
       - name: Check package can be packed
-        run: npm pack --dry-run
+        run: npm pack --dry-run --ignore-scripts
 
       - name: Verify dist directory exists
         run: |
