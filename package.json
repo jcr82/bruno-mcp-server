@@ -51,7 +51,7 @@
   },
   "homepage": "https://github.com/jcr82/bruno-mcp-server#readme",
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^0.6.0",

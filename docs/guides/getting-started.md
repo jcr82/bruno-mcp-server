@@ -18,9 +18,9 @@ Before you begin, ensure you have:
 
 ### Required
 
-- **Node.js 18+** - [Download](https://nodejs.org/)
+- **Node.js 20+** - [Download](https://nodejs.org/)
   ```bash
-  node --version  # Should be v18.0.0 or higher
+  node --version  # Should be v20.0.0 or higher
   ```
 
 - **Bruno Collections** - At least one Bruno collection with `.bru` files

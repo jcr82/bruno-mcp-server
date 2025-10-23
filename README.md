@@ -55,7 +55,7 @@ npm test
 ## Installation
 
 ### Prerequisites
-- **Node.js**: Version 18 or higher
+- **Node.js**: Version 20 or higher
 - **Bruno Collections**: Your existing Bruno API test collections
 
 ### Option 1: NPM Global Installation
