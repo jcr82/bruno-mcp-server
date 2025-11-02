@@ -1,0 +1,33 @@
+meta {
+  name: Get All Posts
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/posts
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+
+  test("Response should be JSON", function() {
+    expect(res.headers['content-type']).to.include('application/json');
+  });
+
+  test("Response should be an array", function() {
+    expect(res.body).to.be.an('array');
+  });
+
+  test("Response should have posts", function() {
+    expect(res.body.length).to.be.greaterThan(0);
+  });
+}

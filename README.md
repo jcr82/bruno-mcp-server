@@ -497,6 +497,28 @@ The server will confirm when reports are generated:
   Wrote html results to ./reports/api-tests.html
 ```
 
+## Example Collection
+
+A ready-to-use example collection is available in [collection-examples/getting-started](collection-examples/getting-started/). This collection demonstrates:
+
+- Basic HTTP methods (GET, POST, PUT)
+- Environment variables usage
+- Request headers and bodies
+- Response tests and assertions
+- Report generation
+
+The example uses the free [JSONPlaceholder API](https://jsonplaceholder.typicode.com), so you can run it immediately without any setup.
+
+**Quick Start:**
+```typescript
+bruno_run_collection({
+  collectionPath: "./collection-examples/getting-started",
+  environment: "dev"
+})
+```
+
+See the [example collection README](collection-examples/getting-started/README.md) for more details and usage examples.
+
 ## Development
 
 ### Run in Development Mode

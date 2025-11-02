@@ -1,0 +1,47 @@
+meta {
+  name: Update Post
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseUrl}}/posts/1
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+body:json {
+  {
+    "id": 1,
+    "title": "Updated Post Title",
+    "body": "This post has been updated via Bruno MCP Server",
+    "userId": 1
+  }
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+
+  test("Response should be JSON", function() {
+    expect(res.headers['content-type']).to.include('application/json');
+  });
+
+  test("ID should remain the same", function() {
+    expect(res.body.id).to.equal(1);
+  });
+
+  test("Title should be updated", function() {
+    expect(res.body.title).to.equal("Updated Post Title");
+  });
+
+  test("Body should be updated", function() {
+    expect(res.body.body).to.equal("This post has been updated via Bruno MCP Server");
+  });
+}

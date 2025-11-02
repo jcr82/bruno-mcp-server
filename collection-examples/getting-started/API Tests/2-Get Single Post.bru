@@ -1,0 +1,38 @@
+meta {
+  name: Get Single Post
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/posts/1
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+
+  test("Response should be JSON", function() {
+    expect(res.headers['content-type']).to.include('application/json');
+  });
+
+  test("Post should have an ID", function() {
+    expect(res.body.id).to.equal(1);
+  });
+
+  test("Post should have a title", function() {
+    expect(res.body.title).to.be.a('string');
+    expect(res.body.title.length).to.be.greaterThan(0);
+  });
+
+  test("Post should have a body", function() {
+    expect(res.body.body).to.be.a('string');
+  });
+}
