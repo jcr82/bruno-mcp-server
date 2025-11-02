@@ -1,6 +1,6 @@
 {
   "name": "bruno-mcp-server",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "MCP server for Bruno CLI integration - Execute API tests through Model Context Protocol",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
